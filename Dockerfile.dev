@@ -11,9 +11,14 @@ COPY package.json .
 
 RUN yarn cache clean
 RUN yarn install
-RUN yarn build
 
 COPY . .
+#Try to create an user who has access to /app directory
+#RUN useradd -ms /bin/bash admin
+#RUN chown -R admin:admin /app
+#USER admin
+
+RUN yarn build
 
 FROM nginx
 COPY --from=builder /app/build /usr/share/nginx/html
