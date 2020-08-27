@@ -1,0 +1,29 @@
+version: "3"
+services:
+  #service name
+  web:
+    stdin_open: true
+    #Build the docker file
+    build:
+      #Point to teh docker file folder
+      context: .
+      #Provide the name of the custom dockerfile we created
+      dockerfile: Dockerfile.dev
+    #Port mapping from conatainer to local system
+    ports:
+      - "3000:3000"
+      #Mapping docker volumes
+    volumes:
+      # Do not copy /app/modules folder
+      - /app/node_modules
+      #Map local dowrking directory to docker container /app
+      - .:/app
+  #Test Service
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["yarn", "run", "test"]
