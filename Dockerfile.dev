@@ -7,18 +7,13 @@ WORKDIR '/app'
 #Build image with npm install
 
 RUN npm install yarn
+
 COPY package.json .
 
-RUN yarn cache clean
+
 RUN yarn install
+RUN yarn cache clean
 
 COPY . .
-#Try to create an user who has access to /app directory
-#RUN useradd -ms /bin/bash admin
-#RUN chown -R admin:admin /app
-#USER admin
 
-RUN yarn build
-
-FROM nginx
-COPY --from=builder /app/build /usr/share/nginx/html
+CMD ["yarn","start"]
